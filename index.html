@@ -1,36 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Astrofísica con Mención en Ciencia de Datos 2024</title>
+  <meta charset="UTF-8" />
+  <title>Malla Curricular Interactiva</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
       background-color: #fafafa;
       margin: 0;
       padding: 40px;
-    }
-
-    .info-box {
-      max-width: 900px;
-      background-color: #fffde7;
-      border-left: 5px solid #fbc02d;
-      border-radius: 8px;
-      padding: 20px 30px;
-      margin: 0 auto 40px auto;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .info-box h2 {
-      margin-top: 0;
-      color: #f57f17;
-      font-size: 22px;
-    }
-
-    .info-box p {
-      font-size: 15px;
-      color: #444;
-      margin-bottom: 10px;
     }
 
     .malla {
@@ -105,13 +83,6 @@
   </style>
 </head>
 <body>
-  <div class="info-box">
-    <h2>Instrucciones de uso</h2>
-    <p>Esta malla curricular es interactiva. Cada curso está representado por una tarjeta con su nombre.</p>
-    <p>• Si el curso está disponible (es decir, cumple con sus prerrequisitos), aparecerá una <strong>nube ☁️</strong> a la derecha. Puedes pulsarla para marcarlo como aprobado.</p>
-    <p>• Cuando marques un curso como aprobado, se mostrará un <strong>sol ☀️</strong>. Puedes hacer clic nuevamente para desmarcarlo.</p>
-  </div>
-
   <div class="malla" id="mallaContainer"></div>
 
   <script>
@@ -176,7 +147,7 @@
       { id: "elec3", name: "Electivo III", prereqs: [], semester: 7 },
 
       // SEMESTRE 8
-      { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "mod", "abd", "elec3"], semester: 8 },
+      { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "mod", "abd", "elec3"], semester: 8 }
     ];
 
     const storageKey = "cursosAprobados";
