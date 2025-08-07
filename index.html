@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Malla Curricular Interactiva</title>
+  <title>Astrofísica con Mención en Ciencia de Datos 2024</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
@@ -11,18 +11,33 @@
       padding: 40px;
     }
 
-    h1 {
-      text-align: center;
-      color: #333;
-      font-size: 28px;
-      margin-bottom: 40px;
+    .info-box {
+      max-width: 900px;
+      background-color: #fffde7;
+      border-left: 5px solid #fbc02d;
+      border-radius: 8px;
+      padding: 20px 30px;
+      margin: 0 auto 40px auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .info-box h2 {
+      margin-top: 0;
+      color: #f57f17;
+      font-size: 22px;
+    }
+
+    .info-box p {
+      font-size: 15px;
+      color: #444;
+      margin-bottom: 10px;
     }
 
     .malla {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 30px;
-      max-width: 1200px;
+      max-width: 1500px;
       margin: 0 auto;
     }
 
@@ -90,12 +105,18 @@
   </style>
 </head>
 <body>
-  <h1>Malla Curricular Interactiva</h1>
+  <div class="info-box">
+    <h2>Instrucciones de uso</h2>
+    <p>Esta malla curricular es interactiva. Cada curso está representado por una tarjeta con su nombre.</p>
+    <p>• Si el curso está disponible (es decir, cumple con sus prerrequisitos), aparecerá una <strong>nube ☁️</strong> a la derecha. Puedes pulsarla para marcarlo como aprobado.</p>
+    <p>• Cuando marques un curso como aprobado, se mostrará un <strong>sol ☀️</strong>. Puedes hacer clic nuevamente para desmarcarlo.</p>
+  </div>
+
   <div class="malla" id="mallaContainer"></div>
 
   <script>
     const courses = [
-      // Semestre 1
+      // SEMESTRE 1
       { id: "fis1", name: "Introducción a la Física I", prereqs: [], semester: 1 },
       { id: "bm1", name: "Bases Matemáticas para la Física I", prereqs: [], semester: 1 },
       { id: "fc1", name: "Física Computacional I", prereqs: [], semester: 1 },
@@ -104,7 +125,7 @@
       { id: "ia", name: "Introducción a la Astrofísica", prereqs: [], semester: 1 },
       { id: "eng1", name: "Inglés I", prereqs: [], semester: 1 },
 
-      // Semestre 2
+      // SEMESTRE 2
       { id: "fis2", name: "Introducción a la Física II", prereqs: ["fis1"], semester: 2 },
       { id: "bm2", name: "Bases Matemáticas para la Física II", prereqs: ["bm1"], semester: 2 },
       { id: "fc2", name: "Física Computacional II", prereqs: ["fc1"], semester: 2 },
@@ -112,6 +133,50 @@
       { id: "cd", name: "Introducción a la Ciencia de Datos", prereqs: ["fc1"], semester: 2 },
       { id: "cc", name: "Comunicación Científica", prereqs: ["gp"], semester: 2 },
       { id: "eng2", name: "Inglés II", prereqs: ["eng1"], semester: 2 },
+
+      // SEMESTRE 3
+      { id: "mecN", name: "Mecánica Newtoniana", prereqs: ["fis2"], semester: 3 },
+      { id: "cv", name: "Cálculo Vectorial", prereqs: ["bm2"], semester: 3 },
+      { id: "fc3", name: "Física Computacional III", prereqs: ["fc2"], semester: 3 },
+      { id: "em", name: "Estructura de la Materia", prereqs: ["fis2", "bm2"], semester: 3 },
+      { id: "termo", name: "Termodinámica", prereqs: ["fis2", "bm2"], semester: 3 },
+      { id: "ds", name: "Desarrollo de Software", prereqs: ["fc2"], semester: 3 },
+      { id: "eng3", name: "Inglés III", prereqs: ["eng2"], semester: 3 },
+
+      // SEMESTRE 4
+      { id: "emag", name: "Electromagnetismo", prereqs: ["fis2", "mecN"], semester: 4 },
+      { id: "ondas", name: "Ondas", prereqs: ["em", "termo"], semester: 4 },
+      { id: "mm1", name: "Métodos Matemáticos para la Física I", prereqs: ["cv"], semester: 4 },
+      { id: "fc4", name: "Física Computacional IV", prereqs: ["fc3"], semester: 4 },
+      { id: "iem", name: "Introducción a la Estadística Moderna", prereqs: [], semester: 4 },
+      { id: "pe", name: "Proyecto de Especialidad", prereqs: ["cc", "fis2"], semester: 4 },
+      { id: "eng4", name: "Inglés IV", prereqs: ["eng3"], semester: 4 },
+
+      // SEMESTRE 5
+      { id: "mecClas", name: "Mecánica Clásica", prereqs: ["mecN", "emag"], semester: 5 },
+      { id: "fq", name: "Fenómenos Cuánticos", prereqs: ["em"], semester: 5 },
+      { id: "mm2", name: "Métodos Matemáticos para la Física II", prereqs: ["mm1"], semester: 5 },
+      { id: "ae", name: "Astrofísica Estelar", prereqs: ["termo"], semester: 5 },
+      { id: "ao", name: "Astrofísica Observacional", prereqs: ["fis1", "ondas"], semester: 5 },
+      { id: "elec1", name: "Electivo I", prereqs: [], semester: 5 },
+
+      // SEMESTRE 6
+      { id: "mf", name: "Mecánica de Fluidos", prereqs: ["termo", "mm2"], semester: 6 },
+      { id: "me", name: "Mecánica Estadística", prereqs: ["fq", "mecClas"], semester: 6 },
+      { id: "imod", name: "Inferencia y Modelos Estadísticos", prereqs: ["iem"], semester: 6 },
+      { id: "agc", name: "Astrofísica Galáctica y Cosmología", prereqs: ["ao", "ae"], semester: 6 },
+      { id: "bd", name: "Estructura y Bases de Datos", prereqs: ["fc4"], semester: 6 },
+      { id: "elec2", name: "Electivo II", prereqs: [], semester: 6 },
+
+      // SEMESTRE 7
+      { id: "prd", name: "Procesos Radiativos y Difusos", prereqs: ["fq", "me"], semester: 7 },
+      { id: "ita", name: "Instrumentación y Tecnología Astronómica", prereqs: ["ao"], semester: 7 },
+      { id: "mod", name: "Modelamiento en Astrofísica", prereqs: ["agc"], semester: 7 },
+      { id: "abd", name: "Astrofísica y Big Data", prereqs: ["bd"], semester: 7 },
+      { id: "elec3", name: "Electivo III", prereqs: [], semester: 7 },
+
+      // SEMESTRE 8
+      { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "mod", "abd", "elec3"], semester: 8 },
     ];
 
     const storageKey = "cursosAprobados";
@@ -129,7 +194,9 @@
       const container = document.getElementById("mallaContainer");
       container.innerHTML = "";
 
-      for (let s = 1; s <= 2; s++) {
+      const totalSemestres = Math.max(...courses.map(c => c.semester));
+
+      for (let s = 1; s <= totalSemestres; s++) {
         const semestreCursos = courses.filter(c => c.semester === s);
         const semestreDiv = document.createElement("div");
         semestreDiv.className = "semester";
