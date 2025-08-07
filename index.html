@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla Curricular Interactiva</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .course {
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      padding: 10px;
+      border: 2px solid transparent;
+      transition: 0.2s;
+    }
+    .approved {
+      background-color: #c8e6c9;
+      border-color: #388e3c;
+    }
+    .available {
+      background-color: #bbdefb;
+      border-color: #1976d2;
+    }
+    .blocked {
+      background-color: #eeeeee;
+      color: #9e9e9e;
+      border-color: #bdbdbd;
+    }
+    button {
+      margin-top: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular Interactiva</h1>
+  <div class="grid" id="courseGrid"></div>
+
+  <script>
+    const courses = [
+      { id: "fis1", name: "Introducción a la Física I", prereqs: [] },
+      { id: "bm1", name: "Bases Matemáticas para la Física I", prereqs: [] },
+      { id: "fc1", name: "Física Computacional I", prereqs: [] },
+      { id: "df1", name: "Datos Físicos I", prereqs: [] },
+      { id: "gp", name: "Gestión Personal", prereqs: [] },
+      { id: "ia", name: "Introducción a la Astrofísica", prereqs: [] },
+      { id: "eng1", name: "Inglés I", prereqs: [] },
+
+      { id: "fis2", name: "Introducción a la Física II", prereqs: ["fis1"] },
+      { id: "bm2", name: "Bases Matemáticas para la Física II", prereqs: ["bm1"] },
+      { id: "fc2", name: "Física Computacional II", prereqs: ["fc1"] },
+      { id: "df2", name: "Datos Físicos II", prereqs: ["df1"] },
+      { id: "cd", name: "Introducción a la Ciencia de Datos", prereqs: ["fc1"] },
+      { id: "cc", name: "Comunicación Científica", prereqs: ["gp"] },
+      { id: "eng2", name: "Inglés II", prereqs: ["eng1"] },
+
+      // Puedes seguir agregando el resto aquí, una vez que confirmes que esta base funciona
+    ];
+
+    const storageKey = "cursosAprobados";
+    let aprobados = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    function guardarProgreso() {
+      localStorage.setItem(storageKey, JSON.stringify(aprobados));
+    }
+
+    function cumplePrerrequisitos(course) {
+      return course.prereqs.every(id => aprobados.includes(id));
+    }
+
+    function crearMalla() {
+      const contenedor = document.getElementById("courseGrid");
+      contenedor.innerHTML = "";
+
+      courses.forEach(course => {
+        const card = document.createElement("div");
+        card.classList.add("course");
+
+        const aprobado = aprobados.includes(course.id);
+        const disponible = !aprobado && cumplePrerrequisitos(course);
+
+        if (aprobado) {
+          card.classList.add("approved");
+        } else if (disponible) {
+          card.classList.add("available");
+        } else {
+          card.classList.add("blocked");
+        }
+
+        card.innerHTML = `<strong>${course.name}</strong><br>`;
+
+        const btn = document.createElement("button");
+        btn.textContent = aprobado ? "Desmarcar" : "Marcar aprobado";
+        btn.disabled = !aprobado && !disponible;
+
+        btn.onclick = () => {
+          if (aprobado) {
+            aprobados = aprobados.filter(id => id !== course.id);
+          } else {
+            aprobados.push(course.id);
+          }
+          guardarProgreso();
+          crearMalla();
+        };
+
+        card.appendChild(btn);
+        contenedor.appendChild(card);
+      });
+    }
+
+    crearMalla();
+  </script>
+</body>
+</html>
