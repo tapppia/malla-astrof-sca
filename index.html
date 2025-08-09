@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>Malla Astrofísica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background-color: #fafafa;
+      font-family: 'Oswald', sans-serif;
+      background-color: #f4f4f4;
       margin: 0;
       padding: 40px;
     }
@@ -14,62 +15,73 @@
     .malla {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
+      gap: 20px;
       max-width: 1500px;
       margin: 0 auto;
     }
 
     .semester {
       background-color: #ffffff;
-      border-radius: 8px;
+      border-radius: 14px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      padding: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .semester h2 {
-      background-color: #e3f2fd;
-      color: #1565c0;
-      padding: 10px;
-      border-radius: 6px;
+      background-color: #000000;
+      color: white;
+      padding: 12px;
+      margin: 0;
       text-align: center;
-      font-size: 18px;
-      margin-top: 0;
-      margin-bottom: 20px;
+      font-size: 20px;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .semester.complete h2 {
+      background-color: #FFD54F;
+      color: black;
     }
 
     .course {
-      background-color: #f0f0f0;
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      border-left: 5px solid #bdbdbd;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+      height: 70px;
     }
 
-    .approved {
-      background-color: #fff8e1;
-      border-left-color: #fbc02d;
+    .course:hover {
+      transform: translateY(-2px);
     }
 
-    .available {
-      background-color: #e3f2fd;
-      border-left-color: #1976d2;
+    .course.approved {
+      background-color: #FFD54F;
+      color: black;
+      font-weight: bold;
     }
 
     .blocked {
-      background-color: #f5f5f5;
-      color: #9e9e9e;
+      opacity: 0.6;
     }
 
     .emoji-btn {
-      font-size: 22px;
+      font-size: 20px;
       background: none;
       border: none;
       cursor: pointer;
       transition: transform 0.2s ease;
+      width: 28px;
+      text-align: center;
+      line-height: 1;
+      padding: 0;
     }
 
     .emoji-btn:disabled {
@@ -87,7 +99,7 @@
 
   <script>
     const courses = [
-      // SEMESTRE 1
+      // Semestre 1
       { id: "fis1", name: "Introducción a la Física I", prereqs: [], semester: 1 },
       { id: "bm1", name: "Bases Matemáticas para la Física I", prereqs: [], semester: 1 },
       { id: "fc1", name: "Física Computacional I", prereqs: [], semester: 1 },
@@ -96,7 +108,7 @@
       { id: "ia", name: "Introducción a la Astrofísica", prereqs: [], semester: 1 },
       { id: "eng1", name: "Inglés I", prereqs: [], semester: 1 },
 
-      // SEMESTRE 2
+      // Semestre 2
       { id: "fis2", name: "Introducción a la Física II", prereqs: ["fis1"], semester: 2 },
       { id: "bm2", name: "Bases Matemáticas para la Física II", prereqs: ["bm1"], semester: 2 },
       { id: "fc2", name: "Física Computacional II", prereqs: ["fc1"], semester: 2 },
@@ -105,7 +117,7 @@
       { id: "cc", name: "Comunicación Científica", prereqs: ["gp"], semester: 2 },
       { id: "eng2", name: "Inglés II", prereqs: ["eng1"], semester: 2 },
 
-      // SEMESTRE 3
+      // Semestre 3
       { id: "mecN", name: "Mecánica Newtoniana", prereqs: ["fis2"], semester: 3 },
       { id: "cv", name: "Cálculo Vectorial", prereqs: ["bm2"], semester: 3 },
       { id: "fc3", name: "Física Computacional III", prereqs: ["fc2"], semester: 3 },
@@ -114,7 +126,7 @@
       { id: "ds", name: "Desarrollo de Software", prereqs: ["fc2"], semester: 3 },
       { id: "eng3", name: "Inglés III", prereqs: ["eng2"], semester: 3 },
 
-      // SEMESTRE 4
+      // Semestre 4
       { id: "emag", name: "Electromagnetismo", prereqs: ["fis2", "mecN"], semester: 4 },
       { id: "ondas", name: "Ondas", prereqs: ["em", "termo"], semester: 4 },
       { id: "mm1", name: "Métodos Matemáticos para la Física I", prereqs: ["cv"], semester: 4 },
@@ -123,31 +135,31 @@
       { id: "pe", name: "Proyecto de Especialidad", prereqs: ["cc", "fis2"], semester: 4 },
       { id: "eng4", name: "Inglés IV", prereqs: ["eng3"], semester: 4 },
 
-      // SEMESTRE 5
-      { id: "mecClas", name: "Mecánica Clásica", prereqs: ["mecN", "emag"], semester: 5 },
+      // Semestre 5
+      { id: "mecC", name: "Mecánica Clásica", prereqs: ["mecN", "emag"], semester: 5 },
       { id: "fq", name: "Fenómenos Cuánticos", prereqs: ["em"], semester: 5 },
       { id: "mm2", name: "Métodos Matemáticos para la Física II", prereqs: ["mm1"], semester: 5 },
       { id: "ae", name: "Astrofísica Estelar", prereqs: ["termo"], semester: 5 },
       { id: "ao", name: "Astrofísica Observacional", prereqs: ["fis1", "ondas"], semester: 5 },
-      { id: "elec1", name: "Electivo I", prereqs: [], semester: 5 },
+      { id: "el1", name: "Electivo I", prereqs: [], semester: 5 },
 
-      // SEMESTRE 6
+      // Semestre 6
       { id: "mf", name: "Mecánica de Fluidos", prereqs: ["termo", "mm2"], semester: 6 },
-      { id: "me", name: "Mecánica Estadística", prereqs: ["fq", "mecClas"], semester: 6 },
-      { id: "imod", name: "Inferencia y Modelos Estadísticos", prereqs: ["iem"], semester: 6 },
+      { id: "me", name: "Mecánica Estadística", prereqs: ["fq", "mecC"], semester: 6 },
+      { id: "ims", name: "Inferencia y Modelos Estadísticos", prereqs: ["iem"], semester: 6 },
       { id: "agc", name: "Astrofísica Galáctica y Cosmología", prereqs: ["ao", "ae"], semester: 6 },
       { id: "bd", name: "Estructura y Bases de Datos", prereqs: ["fc4"], semester: 6 },
-      { id: "elec2", name: "Electivo II", prereqs: [], semester: 6 },
+      { id: "el2", name: "Electivo II", prereqs: [], semester: 6 },
 
-      // SEMESTRE 7
+      // Semestre 7
       { id: "prd", name: "Procesos Radiativos y Difusos", prereqs: ["fq", "me"], semester: 7 },
       { id: "ita", name: "Instrumentación y Tecnología Astronómica", prereqs: ["ao"], semester: 7 },
-      { id: "mod", name: "Modelamiento en Astrofísica", prereqs: ["agc"], semester: 7 },
+      { id: "ma", name: "Modelamiento en Astrofísica", prereqs: ["agc"], semester: 7 },
       { id: "abd", name: "Astrofísica y Big Data", prereqs: ["bd"], semester: 7 },
-      { id: "elec3", name: "Electivo III", prereqs: [], semester: 7 },
+      { id: "el3", name: "Electivo III", prereqs: [], semester: 7 },
 
-      // SEMESTRE 8
-      { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "mod", "abd", "elec3"], semester: 8 }
+      // Semestre 8
+      { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "ma", "abd", "el3"], semester: 8 }
     ];
 
     const storageKey = "cursosAprobados";
@@ -172,6 +184,11 @@
         const semestreDiv = document.createElement("div");
         semestreDiv.className = "semester";
 
+        const todosAprobados = semestreCursos.every(c => aprobados.includes(c.id));
+        if (todosAprobados && semestreCursos.length > 0) {
+          semestreDiv.classList.add("complete");
+        }
+
         const titulo = document.createElement("h2");
         titulo.textContent = `Semestre ${s}`;
         semestreDiv.appendChild(titulo);
@@ -184,24 +201,31 @@
           courseDiv.className = "course";
           if (aprobado) {
             courseDiv.classList.add("approved");
-          } else if (disponible) {
-            courseDiv.classList.add("available");
-          } else {
+          } else if (!disponible) {
             courseDiv.classList.add("blocked");
           }
 
           const nameSpan = document.createElement("span");
-          nameSpan.innerHTML = `<strong>${course.name}</strong>`;
+          nameSpan.textContent = course.name;
 
           const btn = document.createElement("button");
           btn.className = "emoji-btn";
-          btn.innerHTML = aprobado ? "☀️" : "☁️";
-          btn.disabled = !aprobado && !disponible;
+
+          if (aprobado) {
+            btn.innerHTML = "☀️";
+            btn.disabled = false;
+          } else if (disponible) {
+            btn.innerHTML = "☁️";
+            btn.disabled = false;
+          } else {
+            btn.innerHTML = "";
+            btn.disabled = true;
+          }
 
           btn.onclick = () => {
             if (aprobado) {
               aprobados = aprobados.filter(id => id !== course.id);
-            } else {
+            } else if (disponible) {
               aprobados.push(course.id);
             }
             guardarProgreso();
