@@ -92,6 +92,24 @@
     .emoji-btn:hover:not(:disabled) {
       transform: scale(1.2);
     }
+
+    /* --- Ajustes para celular (opción 1) --- */
+    @media (max-width: 600px) {
+      .course {
+        flex-direction: row-reverse; /* Mueve el botón a la izquierda */
+        justify-content: flex-start; /* Alinea el contenido */
+      }
+
+      .emoji-btn {
+        font-size: 28px;  /* Más grande para tocar fácil */
+        width: 40px;      /* Área más amplia */
+        height: 40px;     /* Área cuadrada */
+      }
+
+      .course span {
+        flex: 1;          /* Texto ocupa todo el espacio disponible */
+      }
+    }
   </style>
 </head>
 <body>
