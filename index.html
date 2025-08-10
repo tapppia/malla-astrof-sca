@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>Malla Astrofísica</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
   <style>
+    /* base */
+    *, *::before, *::after { box-sizing: border-box; }
     body {
       font-family: 'Oswald', sans-serif;
       background-color: #f4f4f4;
@@ -27,17 +30,19 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      padding: 12px;
     }
 
     .semester h2 {
       background-color: #000000;
       color: white;
       padding: 12px;
-      margin: 0;
+      margin: 0 0 10px 0;
       text-align: center;
       font-size: 20px;
       letter-spacing: 1px;
       transition: background-color 0.3s ease, color 0.3s ease;
+      border-radius: 8px;
     }
 
     .semester.complete h2 {
@@ -49,18 +54,17 @@
       background-color: #ffffff;
       border-radius: 8px;
       padding: 10px 14px;
-      margin: 10px;
+      margin: 10px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-      height: 70px;
+      min-height: 70px;         /* deja que crezca si hace falta */
+      height: auto;
     }
 
-    .course:hover {
-      transform: translateY(-2px);
-    }
+    .course:hover { transform: translateY(-2px); }
 
     .course.approved {
       background-color: #FFD54F;
@@ -68,8 +72,11 @@
       font-weight: bold;
     }
 
-    .blocked {
-      opacity: 0.6;
+    .blocked { opacity: 0.6; }
+
+    .course span {
+      flex: 1;
+      word-break: break-word;
     }
 
     .emoji-btn {
@@ -78,10 +85,13 @@
       border: none;
       cursor: pointer;
       transition: transform 0.2s ease;
-      width: 28px;
+      width: 36px;
+      height: 36px;
       text-align: center;
       line-height: 1;
-      padding: 0;
+      padding: 4px;
+      border-radius: 8px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .emoji-btn:disabled {
@@ -89,25 +99,53 @@
       cursor: not-allowed;
     }
 
-    .emoji-btn:hover:not(:disabled) {
-      transform: scale(1.2);
+    .emoji-btn:hover:not(:disabled) { transform: scale(1.15); }
+
+    /* responsive: tablet */
+    @media (max-width: 900px) {
+      .malla { grid-template-columns: repeat(2, 1fr); }
+      body { padding: 24px; }
     }
 
-    /* --- Ajustes para celular (opción 1) --- */
+    /* responsive: móvil */
     @media (max-width: 600px) {
-      .course {
-        flex-direction: row-reverse; /* Mueve el botón a la izquierda */
-        justify-content: flex-start; /* Alinea el contenido */
+      body { padding: 18px; }
+      .malla {
+        grid-template-columns: 1fr; /* 1 columna en móvil para que no se comprima */
+        gap: 14px;
+        max-width: 100%;
       }
 
+      .semester {
+        padding: 10px;
+      }
+
+      .semester h2 {
+        font-size: 18px;
+        padding: 10px;
+      }
+
+      .course {
+        align-items: center;
+        justify-content: flex-start; /* alineamos desde la izquierda */
+        padding: 10px;
+        min-height: 56px;
+      }
+
+      /* colocamos el botón a la izquierda sin cambiar el flow global */
       .emoji-btn {
-        font-size: 28px;  /* Más grande para tocar fácil */
-        width: 40px;      /* Área más amplia */
-        height: 40px;     /* Área cuadrada */
+        order: -1;            /* fuerza que vaya antes del texto */
+        margin-right: 12px;   /* separación texto - botón */
+        font-size: 28px;
+        width: 48px;
+        height: 48px;
+        padding: 6px;
+        border-radius: 10px;
       }
 
       .course span {
-        flex: 1;          /* Texto ocupa todo el espacio disponible */
+        flex: 1;
+        padding-right: 6px;
       }
     }
   </style>
@@ -117,7 +155,7 @@
 
   <script>
     const courses = [
-      // Semestre 1
+      // (igual a tu lista original)
       { id: "fis1", name: "Introducción a la Física I", prereqs: [], semester: 1 },
       { id: "bm1", name: "Bases Matemáticas para la Física I", prereqs: [], semester: 1 },
       { id: "fc1", name: "Física Computacional I", prereqs: [], semester: 1 },
@@ -126,7 +164,6 @@
       { id: "ia", name: "Introducción a la Astrofísica", prereqs: [], semester: 1 },
       { id: "eng1", name: "Inglés I", prereqs: [], semester: 1 },
 
-      // Semestre 2
       { id: "fis2", name: "Introducción a la Física II", prereqs: ["fis1"], semester: 2 },
       { id: "bm2", name: "Bases Matemáticas para la Física II", prereqs: ["bm1"], semester: 2 },
       { id: "fc2", name: "Física Computacional II", prereqs: ["fc1"], semester: 2 },
@@ -135,7 +172,6 @@
       { id: "cc", name: "Comunicación Científica", prereqs: ["gp"], semester: 2 },
       { id: "eng2", name: "Inglés II", prereqs: ["eng1"], semester: 2 },
 
-      // Semestre 3
       { id: "mecN", name: "Mecánica Newtoniana", prereqs: ["fis2"], semester: 3 },
       { id: "cv", name: "Cálculo Vectorial", prereqs: ["bm2"], semester: 3 },
       { id: "fc3", name: "Física Computacional III", prereqs: ["fc2"], semester: 3 },
@@ -144,7 +180,6 @@
       { id: "ds", name: "Desarrollo de Software", prereqs: ["fc2"], semester: 3 },
       { id: "eng3", name: "Inglés III", prereqs: ["eng2"], semester: 3 },
 
-      // Semestre 4
       { id: "emag", name: "Electromagnetismo", prereqs: ["fis2", "mecN"], semester: 4 },
       { id: "ondas", name: "Ondas", prereqs: ["em", "termo"], semester: 4 },
       { id: "mm1", name: "Métodos Matemáticos para la Física I", prereqs: ["cv"], semester: 4 },
@@ -153,7 +188,6 @@
       { id: "pe", name: "Proyecto de Especialidad", prereqs: ["cc", "fis2"], semester: 4 },
       { id: "eng4", name: "Inglés IV", prereqs: ["eng3"], semester: 4 },
 
-      // Semestre 5
       { id: "mecC", name: "Mecánica Clásica", prereqs: ["mecN", "emag"], semester: 5 },
       { id: "fq", name: "Fenómenos Cuánticos", prereqs: ["em"], semester: 5 },
       { id: "mm2", name: "Métodos Matemáticos para la Física II", prereqs: ["mm1"], semester: 5 },
@@ -161,7 +195,6 @@
       { id: "ao", name: "Astrofísica Observacional", prereqs: ["fis1", "ondas"], semester: 5 },
       { id: "el1", name: "Electivo I", prereqs: [], semester: 5 },
 
-      // Semestre 6
       { id: "mf", name: "Mecánica de Fluidos", prereqs: ["termo", "mm2"], semester: 6 },
       { id: "me", name: "Mecánica Estadística", prereqs: ["fq", "mecC"], semester: 6 },
       { id: "ims", name: "Inferencia y Modelos Estadísticos", prereqs: ["iem"], semester: 6 },
@@ -169,43 +202,31 @@
       { id: "bd", name: "Estructura y Bases de Datos", prereqs: ["fc4"], semester: 6 },
       { id: "el2", name: "Electivo II", prereqs: [], semester: 6 },
 
-      // Semestre 7
       { id: "prd", name: "Procesos Radiativos y Difusos", prereqs: ["fq", "me"], semester: 7 },
       { id: "ita", name: "Instrumentación y Tecnología Astronómica", prereqs: ["ao"], semester: 7 },
       { id: "ma", name: "Modelamiento en Astrofísica", prereqs: ["agc"], semester: 7 },
       { id: "abd", name: "Astrofísica y Big Data", prereqs: ["bd"], semester: 7 },
       { id: "el3", name: "Electivo III", prereqs: [], semester: 7 },
 
-      // Semestre 8
       { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "ma", "abd", "el3"], semester: 8 }
     ];
 
     const storageKey = "cursosAprobados";
     let aprobados = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-    function guardarProgreso() {
-      localStorage.setItem(storageKey, JSON.stringify(aprobados));
-    }
-
-    function cumplePrerrequisitos(course) {
-      return course.prereqs.every(id => aprobados.includes(id));
-    }
+    function guardarProgreso() { localStorage.setItem(storageKey, JSON.stringify(aprobados)); }
+    function cumplePrerrequisitos(course) { return course.prereqs.every(id => aprobados.includes(id)); }
 
     function crearMalla() {
       const container = document.getElementById("mallaContainer");
       container.innerHTML = "";
-
       const totalSemestres = Math.max(...courses.map(c => c.semester));
-
       for (let s = 1; s <= totalSemestres; s++) {
         const semestreCursos = courses.filter(c => c.semester === s);
         const semestreDiv = document.createElement("div");
         semestreDiv.className = "semester";
-
         const todosAprobados = semestreCursos.every(c => aprobados.includes(c.id));
-        if (todosAprobados && semestreCursos.length > 0) {
-          semestreDiv.classList.add("complete");
-        }
+        if (todosAprobados && semestreCursos.length > 0) semestreDiv.classList.add("complete");
 
         const titulo = document.createElement("h2");
         titulo.textContent = `Semestre ${s}`;
@@ -217,11 +238,8 @@
 
           const courseDiv = document.createElement("div");
           courseDiv.className = "course";
-          if (aprobado) {
-            courseDiv.classList.add("approved");
-          } else if (!disponible) {
-            courseDiv.classList.add("blocked");
-          }
+          if (aprobado) courseDiv.classList.add("approved");
+          else if (!disponible) courseDiv.classList.add("blocked");
 
           const nameSpan = document.createElement("span");
           nameSpan.textContent = course.name;
@@ -229,23 +247,13 @@
           const btn = document.createElement("button");
           btn.className = "emoji-btn";
 
-          if (aprobado) {
-            btn.innerHTML = "☀️";
-            btn.disabled = false;
-          } else if (disponible) {
-            btn.innerHTML = "☁️";
-            btn.disabled = false;
-          } else {
-            btn.innerHTML = "";
-            btn.disabled = true;
-          }
+          if (aprobado) { btn.innerHTML = "☀️"; btn.disabled = false; }
+          else if (disponible) { btn.innerHTML = "☁️"; btn.disabled = false; }
+          else { btn.innerHTML = ""; btn.disabled = true; }
 
           btn.onclick = () => {
-            if (aprobado) {
-              aprobados = aprobados.filter(id => id !== course.id);
-            } else if (disponible) {
-              aprobados.push(course.id);
-            }
+            if (aprobado) aprobados = aprobados.filter(id => id !== course.id);
+            else if (disponible) aprobados.push(course.id);
             guardarProgreso();
             crearMalla();
           };
